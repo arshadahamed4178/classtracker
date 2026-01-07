@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tutor Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <div class="nav">
+        <div class="nav-title">Tutor Dashboard</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="nav-role">{{ request.user.username }}</span>
+
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" name="logout" class="btn small">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="card">
+            <h2>Create New Class</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input name="class_name" type="text" placeholder="Class name" required>
+                <button type="submit" name="create_class" class="btn small" style="margin-top: 10px;">Create</button>
+            </form>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; gap:10px;">
+            <h2>Your Classes</h2>
+
+            <form method="get">
+                <select name="selected_class" onchange="this.form.submit()">
+                    {% for c in classes %}
+                    <option value="{{ c.id }}" {% if selected_class == c.id %}selected{% endif %}>{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="selected_class" value="{{ selected_class }}">
+                <button type="submit" name="delete_class" class="btn small">Delete</button>
+            </form>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="card">
+                <h2>Students</h2>
+                <ul>
+                    {% for s in students %}
+                    <li>{{ s.user.username }}</li>
+                    {% empty %}
+                    <li>No students yet</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Topics</h2>
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Done?</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in topics %}
+                        <tr>
+                            <td>{{ t.title }}</td>
+                            <td>{{ t.is_completed|yesno:"Completed,Pending" }}</td>
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="selected_class" value="{{ selected_class }}">
+                                    <input type="hidden" name="topic_id" value="{{ t.id }}">
+                                    <button name="toggle_topic" class="btn small">{% if t.is_completed %}Mark Pending{% else %}Mark Done{% endif %}</button>
+                                </form>
+
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="selected_class" value="{{ selected_class }}">
+                                    <input type="hidden" name="delete_topic" value="{{ t.id }}">
+                                    <button class="btn secondary small">X</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No topics yet</td>
+                        </tr>
+                    {% endfor %} 
+                    </tbody>
+                </table>
+
+                <form method="post" style="display:flex; gap:10px; margin-top:12px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="selected_class" value="{{ selected_class }}">
+                    <input name="topic_title" type="text" placeholder="New topic" required style="flex:1;">
+                    <button type="submit" name="create_topic" class="btn small">Add Topic</button>
+                </form>
+
+            </div>
+
+            <div class="card full-width">
+                <h2>Message Students</h2>
+                <div style="max-height:220px; overflow-y:auto; margin-bottom:8px;">
+                    {% for m in messages %}
+                    <div>
+                        <b>{{ m.sender.username }}:</b> {{ m.text }}
+                    </div>
+                    {% empty %}
+                    <p>No messages</p>
+                    {% endfor %}
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="selected_class" value="{{ selected_class }}">
+                    <textarea name="message" placeholder="Write a message..."
+                        style="width:100%; min-height:80px;"></textarea>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button name="send_all" class="btn small">Send to All</button>
+                        <button name="send_one" class="btn secondary small">Send to One</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

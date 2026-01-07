@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Class Tracker</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-title">Class Tracker</div>
+    <div>
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-link" href="{% url 'register' %}">Register</a>
+    </div>
+</div>
+
+<div class="page" style="text-align:center;">
+    <h1 style="font-size:32px; margin-bottom:10px;">
+        Welcome to <span style="color:#346beb;">Class Tracker</span>
+    </h1>
+
+    <p style="font-size:18px; opacity:0.9; margin-bottom:24px;">
+        A smart and simple way for tutors and students to manage classes,
+        topics, and messages — all in one dashboard.
+    </p>
+
+    <div class="card" style="max-width:600px; margin:auto;">
+        <h2 style="margin-bottom:12px;">Learn Better. Teach Smarter.</h2>
+
+        <p>
+            Class Tracker helps tutors handle class schedules, lessons taught,
+            student lists, and direct communication. Students can join classes,
+            view topics, and stay updated with messages in real time.
+        </p>
+
+        <div style="margin-top:20px; display:flex; justify-content:center; gap:12px;">
+            <a href="{% url 'login' %}" class="btn">Login</a>
+            <a href="{% url 'register' %}" class="btn secondary">Register</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

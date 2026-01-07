@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <div class="nav">
+        <div class="nav-title">Student Dashboard</div>
+
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="nav-role">
+                {{ request.user.username }}
+            </span>
+
+            <a class="nav-link" href="{% url 'login' %}">Logout</a>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Available Classes</h1>
+
+        <div class="card">
+            <h2>Join a Class</h2>
+
+            <form method="post" class="join-class-form">
+                {% csrf_token %}
+
+                <select name="class_id">
+                    {% for c in classes %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% empty %}
+                    <option disabled>No classes available</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn small" style="margin-top:8px;">
+                    Join Class
+                </button>
+            </form>
+
+            <script>
+            (function(){
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const form = document.querySelector('form.join-class-form');
+                    if (!form) return;
+                    const tokenInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+
+                    form.addEventListener('submit', function (e) {
+                        const cookieToken = getCookie('csrftoken');
+                        if (tokenInput && cookieToken) {
+                            tokenInput.value = cookieToken;
+                        }
+
+                        console.log('CSRF cookie:', cookieToken);
+                        console.log('Form token:', tokenInput ? tokenInput.value : null);
+                    });
+                });
+            })();
+            </script>
+
+            {% if message %}
+            <p class="small-text" style="margin-top:6px;">{{ message }}</p>
+            {% endif %}
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Topics</h2>
+
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topic in topics %}
+                        <tr>
+                            <td>{{ topic.title }}</td>
+                            <td>{{ topic.is_completed|yesno:"Completed,Pending" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No topics yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Messages</h2>
+
+                <div style="max-height:220px; overflow-y:auto; margin-bottom:8px;">
+                    {% for msg in messages %}
+                    <div class="message">
+                        <b>{{ msg.sender.username }}</b>: {{ msg.text }}
+                    </div>
+                    {% empty %}
+                    <p>No messages yet</p>
+                    {% endfor %}
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <textarea name="message" placeholder="Write a message to your tutor..."
+                        style="width:100%; min-height:70px; margin-top:6px;"></textarea>
+
+                    <button class="btn small" style="margin-top:8px;">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
