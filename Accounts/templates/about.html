@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>About | Class Tracker</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-title">About</div>
+    <div>
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-link" href="{% url 'register' %}">Register</a>
+    </div>
+</div>
+
+<div class="page" style="text-align:center;">
+    <h1 style="font-size:32px; margin-bottom:10px;">
+        About <span style="color:#346beb;">Class Tracker</span>
+    </h1>
+
+    <p style="font-size:18px; opacity:0.9; margin-bottom:24px;">
+        Built to simplify learning and teaching management.
+    </p>
+
+    <div class="card" style="max-width:700px; margin:auto; text-align:left;">
+        <h2 style="margin-bottom:12px; text-align:center;">What is Class Tracker?</h2>
+
+        <p>
+            <strong>Class Tracker</strong> is a web-based platform designed to help tutors
+            and students stay organized and connected. It brings class management,
+            lesson tracking, and communication into one simple and intuitive system.
+        </p>
+
+        <h3 style="margin-top:20px;">For Tutors</h3>
+            <p>Create and manage classes easily</p>
+            <p>Track topics and lessons taught</p>
+            <p>View enrolled students</p>
+            <p>Send messages and updates</p>
+
+        <h3 style="margin-top:20px;">For Students</h3>
+            <p>Join classes with ease</p>
+            <p>View lessons and topics covered</p>
+            <p>Receive announcements and messages</p>
+            <p>Stay organized and informed</p>
+
+        <p style="margin-top:20px;">
+            Our goal is to make learning smoother, communication clearer,
+            and class management effortless — so you can focus on what truly
+            matters: teaching and learning.
+        </p>
+
+        <div style="margin-top:24px; text-align:center;">
+            <a href="{% url 'register' %}" class="btn">Get Started</a>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+
+</body>
+</html>

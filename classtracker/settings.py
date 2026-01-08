@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kt4n(8bs7mst-!3y!zw5@nd6ket9eu(#z#&st)2y7(&b#n=ftg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['arshad4178.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','192.168.29.75']
 
 
 # Application definition
@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'classtracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'arshad4178$ct_db',        # your PythonAnywhere DB name
-        'USER': 'arshad4178',              # your PythonAnywhere username
-        'PASSWORD': 'YOUR_MYSQL_PASSWORD', # your MySQL password
-        'HOST': 'arshad4178.mysql.pythonanywhere-services.com',
+        'NAME': 'ct_db',
+        'USER': 'root', 
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
@@ -121,8 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

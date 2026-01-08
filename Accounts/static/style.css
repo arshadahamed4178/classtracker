@@ -185,6 +185,7 @@ textarea {
     padding: 6px 8px;
     font-size: 14px;
     border-bottom: 1px solid #e5e7eb;
+    margin-left: 5px;
 }
 
 #studentList li:last-child {

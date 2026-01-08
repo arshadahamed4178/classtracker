@@ -11,6 +11,9 @@
 <div class="nav">
     <div class="nav-title">Class Tracker</div>
     <div>
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
         <a class="nav-link" href="{% url 'login' %}">Login</a>
         <a class="nav-link" href="{% url 'register' %}">Register</a>
     </div>
@@ -32,7 +35,7 @@
         <p>
             Class Tracker helps tutors handle class schedules, lessons taught,
             student lists, and direct communication. Students can join classes,
-            view topics, and stay updated with messages in real time.
+            view topics, and stay updated with messages.
         </p>
 
         <div style="margin-top:20px; display:flex; justify-content:center; gap:12px;">
@@ -41,6 +44,8 @@
         </div>
     </div>
 </div>
+
+{% include 'footer.html' %}
 
 </body>
 </html>

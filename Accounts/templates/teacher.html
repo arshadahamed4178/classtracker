@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tutor Dashboard</title>
+    <title>Tutor Dashboard | Class Tracker</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
@@ -13,6 +13,12 @@
     <div class="nav">
         <div class="nav-title">Tutor Dashboard</div>
         <div style="display:flex; align-items:center; gap:12px;">
+            
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
             <span class="nav-role">{{ request.user.username }}</span>
 
             <form method="post" style="display:inline;">
@@ -55,13 +61,11 @@
 
             <div class="card">
                 <h2>Students</h2>
-                <ul>
                     {% for s in students %}
-                    <li>{{ s.user.username }}</li>
+                    <p>{{ s.user.username }}</p>
                     {% empty %}
-                    <li>No students yet</li>
+                    <p>No students yet</p>
                     {% endfor %}
-                </ul>
             </div>
 
             <div class="card">
@@ -138,6 +142,8 @@
 
         </div>
     </div>
+
+    {% include 'footer.html' %}
 
 </body>
 

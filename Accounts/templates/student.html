@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Student Dashboard</title>
+    <title>Student Dashboard | Class Tracker</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
@@ -14,6 +14,11 @@
         <div class="nav-title">Student Dashboard</div>
 
         <div style="display:flex; align-items:center; gap:12px;">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
             <span class="nav-role">
                 {{ request.user.username }}
             </span>
@@ -33,7 +38,7 @@
 
                 <select name="class_id">
                     {% for c in classes %}
-                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    <option value="{{ c.id }}">{{ c.name }} — {% if c.teacher %}{{ c.teacher.user.email }}{% else %}No teacher{% endif %}</option>
                     {% empty %}
                     <option disabled>No classes available</option>
                     {% endfor %}
@@ -44,31 +49,31 @@
                 </button>
             </form>
 
-            <script>
-            (function(){
-                function getCookie(name) {
-                    const value = `; ${document.cookie}`;
-                    const parts = value.split(`; ${name}=`);
-                    if (parts.length === 2) return parts.pop().split(';').shift();
-                }
+            <hr style="margin:12px 0;">
 
-                document.addEventListener('DOMContentLoaded', function () {
-                    const form = document.querySelector('form.join-class-form');
-                    if (!form) return;
-                    const tokenInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+            <h3>Joined Classes</h3>
+            {% if student_classes %}
+            <ul style="list-style:none; padding-left:0; margin-top:8px;">
+                {% for c in student_classes %}
+                <li style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.06);">
+                    <div>{{ c.name }}</div>
+                    <div style="display:flex; gap:8px;">
+                        <form method="get" style="margin:0;">
+                            <input type="hidden" name="selected_class" value="{{ c.id }}" />
+                            <button class="btn small">View</button>
+                        </form>
 
-                    form.addEventListener('submit', function (e) {
-                        const cookieToken = getCookie('csrftoken');
-                        if (tokenInput && cookieToken) {
-                            tokenInput.value = cookieToken;
-                        }
-
-                        console.log('CSRF cookie:', cookieToken);
-                        console.log('Form token:', tokenInput ? tokenInput.value : null);
-                    });
-                });
-            })();
-            </script>
+                        <form method="post" style="margin:0;">
+                            {% csrf_token %}
+                            <button class="btn small" name="leave_class" value="{{ c.id }}" onclick="return confirm('Leave class {{ c.name }}?');">Leave</button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="small-text">You haven't joined any classes yet.</div>
+            {% endif %}
 
             {% if message %}
             <p class="small-text" style="margin-top:6px;">{{ message }}</p>
@@ -116,6 +121,16 @@
 
                 <form method="post">
                     {% csrf_token %}
+
+                    <label for="active_class">To Class:</label>
+                    <select name="active_class" id="active_class" style="width:100%; margin-top:6px;">
+                        {% for c in student_classes %}
+                        <option value="{{ c.id }}" {% if selected_class == c.id %}selected{% endif %}>{{ c.name }}</option>
+                        {% empty %}
+                        <option disabled>No joined classes</option>
+                        {% endfor %}
+                    </select>
+
                     <textarea name="message" placeholder="Write a message to your tutor..."
                         style="width:100%; min-height:70px; margin-top:6px;"></textarea>
 
@@ -126,6 +141,8 @@
             </div>
         </div>
     </div>
+
+    {% include 'footer.html' %}
 
 </body>
 
