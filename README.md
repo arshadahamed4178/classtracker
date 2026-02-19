@@ -16,7 +16,7 @@ ClassTracker is a web application for managing student and tutor information wit
 
 ## 🛠️ Tech Stack
 - Backend: Django 4.2, Python  
-- Frontend: HTML, CSS, JavaScript, Django Templates  
+- Frontend: HTML, CSS, Django Templates  
 - Database: SQLite  
 - Image Handling: Pillow  
 
